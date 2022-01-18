@@ -1,4 +1,4 @@
-Ringle Frontend Assignment 2-2  
+Ringle Frontend Assignment 2-1  
 Survery Form  
 https://survey-form-lovat.vercel.app/
 
