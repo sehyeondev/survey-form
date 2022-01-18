@@ -92,7 +92,7 @@ const initialState: FormState = {
     uuid: "",
     title: "",
     desc: "",
-    qType: "",
+    qType: "checkbox",
     selectOptions: [{
       uuid: "",
       title: "",
