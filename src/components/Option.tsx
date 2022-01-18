@@ -1,9 +1,9 @@
 import React from "react";
-import {QuestionInterface, SelectOptionInterface} from '../interfaces/question'
-import {useDispatch} from 'react-redux'
-import {Box, TextField, IconButton, Radio, Checkbox} from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete';
+import { useDispatch } from 'react-redux'
+import { SelectOptionInterface } from '../interfaces/question'
 import { updateSelectOption, deleteSelectOption } from "../reducers/form"
+import { Box, TextField, IconButton, Radio, Checkbox } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface OptionComponentProps {
   qUuid: string;

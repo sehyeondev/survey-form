@@ -17,20 +17,18 @@ export default function Create () {
 
   const submit = () => {
     console.log("=================")
-    console.log("Form Title = " + formTitle);
-    console.log("Form Description = " + formDesc);
+    console.log("Form Title: " + formTitle);
+    console.log("Form Description: " + formDesc);
     questions.forEach((question, qIndex) => {
       console.log("-----------------")
-      console.log(`Question ${qIndex + 1}`)
-      console.log("Question Type = " + question.qType)
-      console.log("Question Title = " + question.title)
-      console.log("Question Description = " + question.desc)
+      console.log(`Question ${qIndex + 1} - type: ${question.qType}`)
+      console.log("Title: " + question.title)
+      console.log("Description: " + question.desc)
+      if (question.qType === "text") return
       question.selectOptions.forEach((option, oIndex) => {
-        console.log(`Option ${oIndex +1} of Question ${qIndex+1}`)
-        console.log("Option Title = " + option.title)
+        console.log(`    Option ${oIndex +1} - ${option.title}`)
       })
     })
-    console.log(questions);
   }
 
   return (
@@ -39,7 +37,7 @@ export default function Create () {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'left',
         bgcolor: 'rgba(103,58,183, 0.1)',
         minHeight: '100vh',  
       }}
