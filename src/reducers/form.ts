@@ -122,12 +122,12 @@ const form = (state: FormState = initialState, action: FormAction) => {
       const cp = cloneDeep(state.questions)
       cp.push({
         uuid: uuidv4(),
-        title: "Untitled Question",
+        title: "",
         desc: "",
         qType: "checkbox",
         selectOptions: [{
           uuid: uuidv4(),
-          title: "Untitled Option"
+          title: ""
         }]})
       return {
         ...state,
@@ -175,7 +175,7 @@ const form = (state: FormState = initialState, action: FormAction) => {
       const question = cp.find(ele => ele.uuid === action.payload.uuid)
       question.selectOptions.push({
         uuid: uuidv4(),
-        title: "added option",
+        title: "",
       })
       return {
         ...state,
