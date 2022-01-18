@@ -1,67 +1,83 @@
-import { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { updateQuesiton, deleteQuesiton, addSelectOption, updateSelectOption, deleteSelectOption } from "../reducers/form"
+import Option from './Option'
+import { QuestionInterface } from '../interfaces/question'
+import { updateQuesiton, deleteQuesiton, addSelectOption } from "../reducers/form"
+import { Box, MenuItem, Select, Button, TextField } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function Question ({question}) {
+const Question: React.FC<{question: QuestionInterface}> = ({question}) => {
   const dispatch = useDispatch();
 
   return (
-    <div>
-      <div>
-        <input 
-          placeholder='Question Title' 
-          value={question.title} 
-          onChange={(e) => dispatch(updateQuesiton("title", e.target.value, question.uuid))}
-        />
+    <Box sx={{bgcolor: 'white', mt: 2, width: 800, p: 3, borderRadius: 2,}}>
+      <Box sx={{display: 'flex', flexDirection: 'row',}}>
+        <Box sx={{display: "flex", flexDirection: 'column', }}>
+          <TextField
+            sx={{width: 500}}
+            variant="outlined"
+            placeholder='Question title' 
+            value={question.title} 
+            onChange={(e) => dispatch(updateQuesiton("title", e.target.value, question.uuid))}
+          />
+          <TextField
+            sx={{ mt:2, width: 500}}
+            multiline
+            variant="outlined" 
+            placeholder='Question Desc'
+            value={question.desc} 
+            onChange={(e) => dispatch(updateQuesiton("desc", e.target.value, question.uuid))} 
+          />
+        </Box>
+        
+  
+        <Box sx={{ml:2}}>
+            <Select
+              sx={{width: 150}}
+              value={question.qType}
+              onChange={(e) => dispatch(updateQuesiton("qType", e.target.value, question.uuid))}
+            >
+              <MenuItem value="checkbox">checkbox</MenuItem>
+              <MenuItem value="radio">radio</MenuItem>
+              <MenuItem value="text">text</MenuItem>
+            </Select>
+        
 
-        <input 
-          placeholder='Question Desc' 
-          value={question.desc} 
-          onChange={(e) => dispatch(updateQuesiton("desc", e.target.value, question.uuid))}
-        />
-
-        <select value={question.qType} onChange={(e) => dispatch(updateQuesiton("qType", e.target.value, question.uuid))}>
-          <option value="checkbox">checkbox</option>
-          <option value="radio">radio</option>
-          <option value="text">text</option>
-        </select>
-
-        <button onClick={(e) => dispatch(deleteQuesiton(question.uuid))}>delete</button>
-      </div>
+          <Button
+            sx={{ml: 8}} 
+            onClick={(e) => dispatch(deleteQuesiton(question.uuid))}>
+            <DeleteIcon />
+          </Button>
+        </Box>
+      </Box>
 
       {
         ((question.qType === "checkbox") || (question.qType === "radio"))  &&
-        <div>
+        <Box>
           {
             question.selectOptions.map((option, index) =>
                 <Option 
                   key={option.uuid}
-                  question={question}
+                  qUuid={question.uuid}
+                  qType={question.qType}
                   option={option}
                 />
             )
           }
-          <button onClick={(e) => dispatch(addSelectOption(question.uuid))}>add option</button>
-        </div>
+          <Button sx={{mt:2}} variant="outlined" onClick={(e) => dispatch(addSelectOption(question.uuid))}>
+            <AddIcon/>
+          </Button>
+        </Box>
       }
 
       {
         ((question.qType === "text")) &&
-        <div>users can type text answer</div>
+        <TextField sx={{mt:2}} placeholder="users can type text answer"></TextField>
       }
-    </div>
+    </Box>
   )
 }
 
-function Option({question, option}){
-  const dispatch = useDispatch();
-
-  return (
-    <div>
-      <input type={question.qType} name = "option"/>
-      <input placeholder='Option Title' value={option.title} onChange={(e) => dispatch(updateSelectOption(e.target.value, question.uuid, option.uuid))}/>
-      <button onClick={() => dispatch(deleteSelectOption(question.uuid, option.uuid))}>x</button>
-    </div>
-  )
-}
+export default React.memo(Question);

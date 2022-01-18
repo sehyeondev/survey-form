@@ -1,4 +1,6 @@
 import {v4 as uuidv4} from 'uuid'
+import { QuestionInterface, } from '../interfaces/question';
+import cloneDeep from 'lodash/cloneDeep';
 
 export const SET_FORM_TITLE = "SET_FORM_TITLE" as const;
 export const SET_FORM_DESC = "SET_FORM_DESC" as const;
@@ -83,19 +85,6 @@ interface FormState{
   questions:Array<QuestionInterface>
 }
 
-interface QuestionInterface{
-  uuid: string;
-  title: string;
-  desc: string;
-  qType: string;
-  selectOptions: Array<SelectOptionInterface>;
-}
-
-interface SelectOptionInterface{
-  uuid: string;
-  title: string;
-}
-
 const initialState: FormState = {
   formTitle: "",
   formDesc: "",
@@ -113,6 +102,7 @@ const initialState: FormState = {
 
 
 const form = (state: FormState = initialState, action: FormAction) => {
+  // const clonedeep = require('lodash.clonedeep')
   switch (action.type) {
     case SET_FORM_TITLE:{
       return {
@@ -129,7 +119,7 @@ const form = (state: FormState = initialState, action: FormAction) => {
     }
 
     case ADD_QUESTION:{
-      const cp = [...state.questions]
+      const cp = cloneDeep(state.questions)
       cp.push({
         uuid: uuidv4(),
         title: "Untitled Question",
@@ -146,7 +136,7 @@ const form = (state: FormState = initialState, action: FormAction) => {
     }
 
     case UPDATE_QUESTION:{
-      const cp = [...state.questions]
+      const cp = cloneDeep(state.questions)
       const question = cp.find(ele => ele.uuid === action.payload.uuid)
       switch (action.payload.key) {
         case "title": {
@@ -154,19 +144,14 @@ const form = (state: FormState = initialState, action: FormAction) => {
           break;
         }
         case "desc": {
-          console.log("im in desc")
-          console.log(action.payload.key)
           question.desc = action.payload.newValue;
           break;
         }
         case "qType": {
-          console.log("im in qType")
-          console.log(action.payload.key)
           question.qType = action.payload.newValue;
           break;
         }
         default: {
-          console.log("im in default")
         }
       }
       return {
@@ -176,7 +161,7 @@ const form = (state: FormState = initialState, action: FormAction) => {
     }
 
     case DELETE_QUESTION:{
-      const cp = [...state.questions]
+      const cp = cloneDeep(state.questions)
       const index = cp.findIndex(ele => ele.uuid === action.payload.uuid)
       cp.splice(index, 1)
       return {
@@ -186,7 +171,7 @@ const form = (state: FormState = initialState, action: FormAction) => {
     }
 
     case ADD_SELECT_OPTION:{
-      const cp = [...state.questions]
+      const cp = cloneDeep(state.questions)
       const question = cp.find(ele => ele.uuid === action.payload.uuid)
       question.selectOptions.push({
         uuid: uuidv4(),
@@ -199,12 +184,10 @@ const form = (state: FormState = initialState, action: FormAction) => {
     }
 
     case UPDATE_SELECT_OPTION:{
-      const cp = [...state.questions]
+      const cp = cloneDeep(state.questions)
       const question = cp.find(ele => ele.uuid === action.payload.qUuid)
       const option = question.selectOptions.find(ele => ele.uuid === action.payload.oUuid)
       option.title = action.payload.title
-      console.log(option.title)
-      console.log(action.payload.title)
       return {
         ...state,
         questions: cp,
@@ -212,7 +195,7 @@ const form = (state: FormState = initialState, action: FormAction) => {
     }
 
     case DELETE_SELECT_OPTION:{
-      const cp = [...state.questions]
+      const cp = cloneDeep(state.questions)
       const question = cp.find(ele => ele.uuid === action.payload.qUuid)
       const oIndex = question.selectOptions.findIndex(ele => ele.uuid === action.payload.oUuid)
       question.selectOptions.splice(oIndex, 1)
