@@ -22,8 +22,7 @@ const Option: React.FC<OptionComponentProps> = ({qUuid, qType, option}) => {
       {
         (qType === "radio") && <Radio />
       }
-      <TextField
-        sx={{width: 600}}
+      <TextField sx={{width: 600}}
         placeholder='Option Title'
         value={option.title}
         onChange={(e) => dispatch(updateSelectOption(e.target.value, qUuid, option.uuid))}/>
@@ -33,6 +32,5 @@ const Option: React.FC<OptionComponentProps> = ({qUuid, qType, option}) => {
     </Box>
   )
 }
-
 
 export default Option
